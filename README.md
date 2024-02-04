@@ -1,5 +1,5 @@
 # Ester Pinna - Data Analyst Portfolio
-##About myself
+## About myself
 Hi there! I'm Ester :) I come from a background in social media advertising, where I've honed an analytical mindset and a critical approach. Currently, I'm transitioning into the world of data analysis, eager to merge my technical skills with marketing insights to craft optimized business strategies.
 
 My academic journey spans both scientific and humanities studies, giving me the versatility needed to tackle complex numerical problems, statistical analysis, graph interpretation, and data-driven understanding of user mentality and behavior. These are areas I'm passionate about diving deeper into within data analysis.
