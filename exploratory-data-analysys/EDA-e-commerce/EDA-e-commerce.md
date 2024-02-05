@@ -240,6 +240,13 @@ WHERE
 
 By doing this, I obtain an **overview of the connections** between the various datasets and their primary keys:
 
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://drive.google.com/file/d/175erkphnycP1Du3rkACNbSTE8j3WOtS-/view?usp=drive_link">
+  <source media="(prefers-color-scheme: light)" srcset="https://drive.google.com/file/d/175erkphnycP1Du3rkACNbSTE8j3WOtS-/view?usp=drive_link">
+  <img alt="Shows datasets from Olist" src="[https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png]([https://i.imgur.com/HRhd2Y0.png](https://drive.google.com/file/d/175erkphnycP1Du3rkACNbSTE8j3WOtS-/view?usp=drive_link))">
+</picture>
+
 Created with [QuickDBD](http://quickdbd/)
 
 Our database also includes the “product\_category\_name\_translation” dataset, which provides English translations for various product categories.
