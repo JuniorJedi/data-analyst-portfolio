@@ -1,4 +1,4 @@
-Data Analysis and Strategies for E-commerce
+Exploratory Data Analysis for E-commerce
 ===========================================
 
 Leveraging SQL and Power BI for Business Analysis
