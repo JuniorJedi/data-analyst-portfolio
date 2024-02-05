@@ -45,10 +45,16 @@ Database Structure
 
 The **Olist database is composed of different datasets**:
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://i.imgur.com/HRhd2Y0.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://i.imgur.com/HRhd2Y0.png">
+  <img alt="Shows datasets from Olist" src="[https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png](https://i.imgur.com/HRhd2Y0.png)">
+</picture>
+
 Source: [Kaggle Olist Store](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
 
-Database Glossary
-=================
+
+## Database Glossary
 
 **Each entry in the glossary describes in detail the fields present in each of the datasets** that make up the database. This knowledge is **essential to ensure correct interpretation of the data** during analysis.
 
@@ -196,10 +202,9 @@ Renamed: category\_name\_translation
 
 _The English category name has been directly integrated into the “products” dataset, allowing us to eliminate this dataset from our analysis._
 
-ER Schema Processing
-====================
+## ER Schema
 
-To **understand the schema of the datasets** in the database, I use the INFORMATION\_SCHEMA.COLUMNS view according to this model:
+To **understand the schema of the datasets** in the database, I use the INFORMATION_SCHEMA.COLUMNS view according to this model:
 
 
 ```SQL
