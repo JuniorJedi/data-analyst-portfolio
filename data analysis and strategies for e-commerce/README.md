@@ -1,8 +1,6 @@
-Data Analysis and Strategies for E-commerce
-===========================================
+# Data Analysis and Strategies for E-commerce
 
-Leveraging SQL and Power BI for Business Analysis
--------------------------------------------------
+## Leveraging SQL and Power BI for Business Analysis
 
 
 Welcome to the vibrant world of Brazilian **e-commerce**, where Olist stands out as an innovative and dynamic entity.
@@ -20,8 +18,9 @@ Our journey will explore various critical elements of **business analytics**, sh
 
 This educational journey aims not just to present data but to transform it into actionable strategies.
 
-Company
-=======
+## Context 
+
+### Company
 
 **Olist is a Brazilian marketplace** that acts as a powerful link between small businesses spread throughout Brazil and a vast network of online sales channels. With a single contract, **these sellers can sell their products through the Olist Store, benefiting from simplified logistic** management thanks to Olist’s logistic partners.
 
@@ -33,15 +32,48 @@ The real data is anonymized and concerns orders made at the Olist Store. **The d
 
 My study focuses on some key business questions that Olist poses to optimize and continuously improve its operations and customer satisfaction.
 
-Goal
-====
+
+### Goal
 
 During this analysis, I will answer **the fundamental business question**:
 
 _How can Olist optimize its operational and marketing strategy to improve profitability, increase customer satisfaction, and reduce delivery times, based on the analysis of historical sales data, customer reviews, and logistic metrics?_
 
-Database Structure
-==================
+### Method
+To effectively and accurately address Olist's business question, I adopted an analysis methodology based on the combined use of SQL BigQuery and Power BI, where effective and intuitive visualization of results was necessary.
+
+## Insights
+This approach allowed me to evaluate several key aspects that led me to some insights and thus to data-driven strategic recommendations.
+
+Consistent Revenue Growth:
+The analysis revealed a steady growth in Olist's revenues over the months, with a noticeable sales peak during the Black Friday promotional period.
+
+Seasonality of Sales: 
+An analysis of monthly trends showed that some months, like April, September, and October, record significantly higher revenues, suggesting seasonality in sales.
+
+Popularity of Specific Product Categories: 
+Some categories ("bed_bath_table", "health_beauty", and "sports_leisure") proved to be particularly popular, contributing significantly both in terms of quantities sold and revenues generated.
+
+Relevance of the Average Order Value (AOV): 
+The average order value was found to be €155, a key indicator for understanding the average spending of customers.
+
+Customer Lifetime Value (CLV): 
+The analysis highlighted that the Customer Lifetime Value (CLV) is €29.21, suggesting room for improvement in customer retention and increasing the long-term value of customers.
+
+Customer Segmentation Based on the Recency-Frequency-Monetary (RFM) Model:
+The adoption of RFM segmentation allowed me to identify groups of customers with different levels of value and loyalty, offering the possibility of customized marketing and sales strategies.
+
+Influence of Delivery Delays on Reviews: 
+A link emerged between delivery delays and a reduction in the average review score, highlighting the importance of efficient logistics to maintain high customer satisfaction.
+
+Correlation between Freight Value and Product Characteristics: 
+The analysis revealed a correlation between freight value and the product's weight/volume, indicating that these factors significantly influence shipping expenses.
+
+
+Through this study, Olist will be able to better understand its market, optimize operations, and increase customer satisfaction, thus strengthening its position in the Brazilian e-commerce market.
+
+## Database Description
+### Database Structure
 
 The **Olist database is composed of different datasets**:
 
@@ -55,7 +87,7 @@ The **Olist database is composed of different datasets**:
 Source: [Kaggle Olist Store](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
 
 
-## Database Glossary
+### Database Glossary
 
 **Each entry in the glossary describes in detail the fields present in each of the datasets** that make up the database. This knowledge is **essential to ensure correct interpretation of the data** during analysis.
 
@@ -203,7 +235,7 @@ Renamed: category\_name\_translation
 
 _The English category name has been directly integrated into the “products” dataset, allowing us to eliminate this dataset from our analysis._
 
-## ER Schema
+### ER Schema
 
 To **understand the schema of the datasets** in the database, I use the INFORMATION_SCHEMA.COLUMNS view according to this model:
 
@@ -290,12 +322,9 @@ WHERE pc.product_category_name = pct.product_category_name;
 
 ```
 
-Data Cleaning
-=============
+## Data Cleaning
 
-Check for Missing Values
-========================
-
+### Check for Missing Values
 **We look for _null_ values**:
 
 ```SQL
@@ -344,19 +373,15 @@ WHERE product_category_name_eng IS NULL;
 
 _Null_ English category names remain where they are also missing in the original language. We cannot replace these _null_ values, as we have no further indications.
 
-Checking for Duplicate Data
-===========================
+### Checking for Duplicate Data
 
 In each table of the database, it is essential to **verify the presence of duplicate rows**. However, in this specific case, such verification is superfluous because each table has a column containing unique data, ensuring the uniqueness of each row.
 
-Data Analysis
-=============
+## Data Analysis
 
-Profitability Analysis
-======================
+### Profitability Analysis
 
-Total Revenue
-=============
+#### Total Revenue
 
 **To accurately determine Olist’s revenue, it is crucial to identify which orders actually contribute to the final revenue.** This process involves analyzing the status of each order to ensure that only those that are completed and delivered are included in the total revenue calculation.
 
@@ -374,7 +399,7 @@ There are 8 different order statuses.
 
 ```SQL
 
-\--Total revenue  
+--Total revenue  
 SELECT ROUND(SUM(op.payment\_value),0) AS total\_revenue  
 FROM \`my-case-studies-270287.brazilian\_marketplace.orders\` AS o  
 INNER JOIN \`my-case-studies-270287.brazilian\_marketplace.order\_payments\` AS op  
@@ -441,36 +466,51 @@ FROM \`my-case-studies-270287.brazilian\_marketplace.orders\`;
 
 Therefore, the period is from September 4, 2016, to October 17, 2018, totaling 773 days (about 2 years and 43 days).
 
-Analysis of Periodic Average Revenue
-====================================
+#### Analysis of Periodic Average Revenue
 
 I can now calculate the average daily, weekly, monthly, and annual revenue:
 
 The **average daily revenue** is calculated as follows:
 
+```sql
+
 \--Average revenue per day  
 SELECT ROUND(15422462 / 773, 0) AS avg\_revenue\_per\_day;
+
+```
 
 The average daily revenue is €19,951.
 
 The **average weekly revenue** is calculated as follows:
 
+```sql
+
 \--Average revenue per week  
 SELECT ROUND(15422462 / 110, 0) AS avg\_revenue\_per\_week;
+
+```
 
 The average weekly revenue is €140,204.
 
 The **average monthly revenue** is calculated as follows:
 
+```sql
+
 \--Average revenue per month  
 SELECT ROUND(15422462 / 25, 0) AS avg\_revenue\_per\_month;
+
+```
 
 The average monthly revenue is €616,898.
 
 The **average annual revenue** is calculated as follows:
 
+```sql
+
 \--Average revenue per year  
 SELECT ROUND(15422462 / 2, 0) AS avg\_revenue\_per\_year;
+
+```
 
 The average annual revenue is €7,711,231.
 
@@ -478,12 +518,13 @@ The average annual revenue is €7,711,231.
 
 Let’s now see how revenues have varied over the considered time period:
 
-Revenue Trends Over Time
-========================
+##### Revenue Trends Over Time
 
 Let’s examine the annual and quarterly revenue trends.
 
 For the **revenue annual trend**:
+
+```sql
 
 \--Changing over years  
 SELECT  
@@ -496,9 +537,13 @@ WHERE o.order\_status = "delivered"
 GROUP BY year  
 ORDER BY year;
 
+```
+
 This shows a consistent increase in revenue over the years.
 
 For the **revenue quarterly trend**:
+
+```sql
 
 \--Changing over quarters  
 SELECT  
@@ -512,12 +557,15 @@ WHERE o.order\_status = "delivered"
 GROUP BY year, quarter  
 ORDER BY year, quarter;
 
+```
+
 Here, we observe a consistent growth across quarters within the period.
 
-Seasonality of Sales
-====================
+#### Seasonality of Sales
 
 A thorough analysis of the seasonality of sales is not possible for the years 2016 and 2018 due to **incomplete data**, as some months are missing:
+
+```sql
 
 \--Changing over months  
 SELECT  
@@ -532,11 +580,15 @@ WHERE o.order\_status = "delivered"
 GROUP BY year, quarter, month  
 ORDER BY year, quarter, month;
 
+```
+
 However, for the year with complete data — 2017 — **we notice a revenue peak** in November, likely linked to **Black Friday** promotional sales.
 
 This trend is more clearly visualized in the Power BI chart:
 
 Additionally, we can derive an **average monthly revenue**:
+
+```sql
 
 \--Changing over months  
 SELECT  
@@ -549,14 +601,15 @@ WHERE o.order\_status = "delivered"
 GROUP BY month  
 ORDER BY month;
 
+```
+
 This analysis highlights that **some months** — April, September, and October **— have the highest revenues.**
 
 This trend is particularly evident in the graph below, which illustrates the monthly revenue distribution.
 
 \***Note**: The graph is taken directly from BigQuery’s “preview chart” function.
 
-Top Popular Products and Categories
-===================================
+##### Top Popular Products and Categories
 
 Let’s analyze **the 10 most popular products in terms of quantity sold**.
 
@@ -566,8 +619,9 @@ Additionally, we observe **the 5 most popular product categories, both in terms 
 
 This analysis will help us understand **which products and categories drive sales and contribute most significantly to the company’s revenue.**
 
-Top Popular Products in Terms of Items Sold:
-============================================
+#### Top Popular Products in Terms of Items Sold:
+
+```sql
 
 \--Counting the Top 10 Best-Selling Products  
 SELECT oi.product\_id, COUNT(oi.product\_id) AS n\_of\_products\_sold, p.product\_category\_name, p.product\_category\_name\_eng  
@@ -581,10 +635,13 @@ GROUP BY oi.product\_id, p.product\_category\_name, p.product\_category\_name\_e
 ORDER BY n\_of\_products\_sold DESC  
 LIMIT 10;
 
+```
+
 **The most sold product** is identified by the ID aca2eb7d00ea1a7b8ebd4e68314663af, belonging to the furniture\_decor category.
 
-Top Popular Categories in Terms of Items Sold:
-==============================================
+#### Top Popular Categories in Terms of Items Sold:
+
+```sql
 
 \--Counting the Top 5 Best-Selling Categories  
 WITH total\_products\_sold AS (  
@@ -611,6 +668,8 @@ GROUP BY p.product\_category\_name\_eng
 ORDER BY n\_of\_products\_per\_category\_sold DESC  
 LIMIT 5;
 
+```
+
 **The most popular categories**, in order of revenue generated, are
 
 bed\_bath\_table,
@@ -619,8 +678,9 @@ health\_beauty,
 
 sports\_leisure.
 
-Top Popular Categories in Terms of Items Sold and Revenues Generated
-====================================================================
+#### Top Popular Categories in Terms of Items Sold and Revenues Generated
+
+```sql
 
 \--Comparing Number of Items Sold and Sales Volumes of the Most Popular Categories  
 WITH total\_revenue\_gained AS (  
@@ -664,6 +724,8 @@ GROUP BY p.product\_category\_name\_eng
 ORDER BY n\_of\_products\_per\_category\_sold DESC  
 LIMIT 5;
 
+```
+
 From the analysis results, we can observe:
 
 **Most Popular Category in Terms of Number of Items Sold**
@@ -679,8 +741,9 @@ From the analysis results, we can observe:
 
 This approach could help in maximizing revenue and ensuring customer satisfaction by readily having in-demand products available.
 
-AOV — Calculation of the Average Order Value
-============================================
+### AOV — Calculation of the Average Order Value
+
+```sql
 
 \--AOV = revenue\_tot / num\_ordini  
 WITH tot\_revenue AS (  
@@ -704,10 +767,11 @@ SELECT
                 (SELECT n\_of\_orders  
                 FROM tot\_orders),0) AS AOV;
 
+```
+
 **The Average Order Value** is €155.
 
-CLV — Assessing Customer Lifetime Value Over Time
-=================================================
+### CLV — Assessing Customer Lifetime Value Over Time
 
 To calculate the Customer Lifetime Value (CLV), I’ve chosen three methods:
 
@@ -741,10 +805,11 @@ At this point, we can calculate the Customer Lifetime Value as follows:
 
 **Customer Lifetime Value** \= Average Customer Value\*Average Customer Lifespan
 
-Average Monthly CLV for the Entire Customer Base
-================================================
+#### Average Monthly CLV for the Entire Customer Base
 
 (step by step)
+
+```sql
 
 \--Customer Lifetime Value as a Monthly Average  
   
@@ -846,10 +911,14 @@ CROSS JOIN
   average\_customer\_lifespan AS acl  
 ORDER BY month;
 
+```
+
 We then obtain the **average monthly CLV.**
 
-CLV for Each Individual Customer
-================================
+#### CLV for Each Individual Customer
+
+
+```sql
 
 \--Customer Lifetime Value for Each Individual Customer  
 WITH customer\_orders AS (  
@@ -894,12 +963,15 @@ JOIN
   ON co.customer\_unique\_id = cl.customer\_unique\_id  
 ORDER BY clv DESC;
 
+```
+
 \***Note**: The image above shows only a preview of the result, as the rows are 93,357, which is the number of unique customers. Also, I have sorted the table by the CLV column in descending order; otherwise, the preview would have shown only those customers with a CLV of zero.
 
 We obtain **the CLV for each customer.**
 
-CLV as an Average of All Customers
-==================================
+#### CLV as an Average of All Customers
+
+```sql
 
 \--Average Customer Lifetime Value  
 WITH customer\_orders AS (  
@@ -948,6 +1020,8 @@ SELECT
   AVG(clv) AS avg\_clv  
 FROM customer\_lifetime\_value\_per\_customer;
 
+```
+
 From this result, we get the following:
 
 **Average Customer Lifetime Value (CLV):** amounts to €29.21, representing the average expenditure each customer is expected to make over the course of their interaction with the company. This data is crucial for defining customer acquisition strategies, as it suggests that the cost to acquire a single customer (Customer Acquisition Cost, CAC) should ideally be less than this figure.
@@ -958,8 +1032,7 @@ From this result, we get the following:
 
 **Average Lifespan**: average duration of the customer relationship is about 0.09 months, or approximately 2.7 days. This very low value indicates that most customer relationships do not extend beyond the initial month.
 
-Segmentazione dei Clienti con RFM
-=================================
+### Segmentazione dei Clienti con RFM
 
 I have decided to **segment customers based on the potential value they could bring to the company.**
 
@@ -974,6 +1047,9 @@ To understand their potential value, I will evaluate three characteristics:
 I am therefore segmenting customers based on what is called “**RFM segmentation**” (i.e., based on various combinations of the factors just listed).
 
 I calculate the **Recency** for each customer:
+
+
+```sql
 
 \--recency  
 \--How many days have passed since the last purchase for each customer?  
@@ -990,9 +1066,13 @@ INNER JOIN \`brazilian\_marketplace.orders\` AS o
 WHERE o.order\_status = "delivered"  
 GROUP BY c.customer\_unique\_id;
 
+```
+
 The Recency column shows the days passed since the last purchase.
 
 I calculate the **Frequency** for each customer:
+
+```sql
 
 \--frequency  
 \--How often has the customer made a purchase?  
@@ -1005,9 +1085,13 @@ INNER JOIN \`brazilian\_marketplace.orders\` AS o
 WHERE o.order\_status = "delivered"  
 GROUP BY c.customer\_unique\_id;
 
+```
+
 The Frequency column shows the number of orders for each individual customer.
 
 I calculate the **Monetary** Value for each customer:
+
+```sql
 
 \--monetary  
 \--What is the value contributed by each individual customer?  
@@ -1022,9 +1106,13 @@ INNER JOIN \`brazilian\_marketplace.order\_payments\` AS op
 WHERE o.order\_status = "delivered"  
 GROUP BY c.customer\_unique\_id;
 
+```
+
 The Monetary column shows the total monetary contribution from each customer (i.e., the revenue generated by each customer).
 
 **We can also combine the three queries into a single table** using a CTE, so we can call it up more quickly during analysis:
+
+```sql
 
 \--Combine the three queries -- recency, frequency, monetary -- into a single table  
 WITH report\_end AS (  
@@ -1053,7 +1141,9 @@ rfm\_customers AS (
   
   
 \-- We will now only refers to this CTE  
-SELECT \* FROM rfm\_customers  
+SELECT \* FROM rfm\_customers
+
+```
   
 
 **To segment our customers, we will use quintile division** (i.e., dividing into 5 groups) **for each of the three RFM values** (Recency, Frequency, Monetary).
@@ -1077,6 +1167,8 @@ We can also identify customers with combinations of factors, such as those who h
 
 To identify these groups, I will first divide the customers into quintiles for each of the 3 factors (Recency, Frequency, Monetary) using the NTILE() function.
 
+```sql
+
 \--I divide my customers into 5 groups based on the three RFM factors  
 quintiles\_customers AS (  
   SELECT  
@@ -1092,6 +1184,8 @@ FROM
   
 \--We will now only refers to this CTE  
 SELECT \* FROM quintiles\_customers
+
+```
 
 Thus, each unique customer will have a value from 1 to 5 for each of the 3 RFM factors depending on the quintile they belong to for that single factor.
 
@@ -1113,6 +1207,8 @@ That is: recency\_quintile <= 1
 
 That is: recency\_quintile >= 4
 
+```sql
+
 \--Customer Segmentation  
 SELECT  
   customer\_unique\_id,  
@@ -1123,6 +1219,8 @@ SELECT
     WHEN recency\_quintile >= 4 THEN "Promising"  
   END AS segment  
 FROM quintiles\_customers;
+
+```
 
 **Each customer is assigned to a group according to the given segmentation.**
 
@@ -1139,12 +1237,13 @@ Of course, we will also have _null_ values for all those combinations that do no
 
 **Now, let’s return to the 4 identified groups (“High Value”, “Loyal”, “At Risk”, “Promising”) to see how to visualize them graphically.**
 
-Churn Rate — Customer Turnover Rate
-===================================
+### Churn Rate — Customer Turnover Rate
 
 The churn rate is the percentage of customers who stop purchasing from a store — in our case, the Olist marketplace — during a specified period.
 
 First, we need to understand **what time frame to look at**: are we interested in analyzing the monthly churn rate? Yearly?
+
+```sql
 
 \--Calculation of the average customer lifespan within my customer base to determine the time period for analyzing the churn rate  
 WITH lifespan\_per\_customer AS (  
@@ -1163,11 +1262,15 @@ ORDER BY customer\_lifespan DESC
 SELECT ROUND(AVG(customer\_lifespan),2) AS avg\_customer\_lifespan  
 FROM lifespan\_per\_customer;
 
+```
+
 **In this case, we have a database that covers a period of a year and a few months,** so it wouldn’t make sense to analyze the annual churn rate.
 
 We know the average customer lifespan is 2.7 days, so it would make sense to analyze the churn rate on a weekly or monthly basis.
 
 **We will look at the monthly churn rate of customers.**
+
+```sql
 
 \--Comparing the number of active customers each month with the previous month  
 WITH monthly\_customers AS (  
@@ -1214,9 +1317,13 @@ comparison\_monthly\_customers AS (
 FROM comparison\_monthly\_customers  
 ORDER BY month ASC
 
+```
+
 **NOTE**: In this case, in the monthly\_variation\_rate column, we have negative numbers when the variation represents a churn rate, and a positive number when the variation represents a growth rate.
 
 Let’s transform the last query into a CTE, name it “variation\_rate\_per\_month” so that we can use it to calculate the average rate of variation.
+
+```sql
 
 . . .  
 variation\_rate\_per\_month AS(  
@@ -1234,10 +1341,12 @@ ORDER BY month ASC
 SELECT ROUND(AVG(monthly\_variation\_rate),2) AS avg\_variation\_rate  
 FROM variation\_rate\_per\_month;
 
+```
+
 We notice that an average variation rate of **+4,455.01% is not a churn rate but rather an extremely surprising growth rate**, perhaps because the available data covers the very first months of Olist’s activity.
 
-Correlation between Shipping Cost and Product Characteristics
-=============================================================
+### Correlation between Shipping Cost and Product Characteristics
+
 
 For this analysis, I used the Power BI visualization tool.
 
