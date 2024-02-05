@@ -242,7 +242,7 @@ Here is the complete procedure used to obtain the ER schema on QuickDBD:
 
 ```SQL
 
-SELEZIONA
+SELECT
  nome_colonna, tipo_dati 
 FROM
  ` < il tuo - progetto - gcp - id > `. < il tuo - nome - bigquery - set di dati > .INFORMATION_SCHEMA.COLUMNS 
@@ -277,12 +277,12 @@ This step eliminates the need for a separate table for translations, thus reduci
 
 ```SQL
 
---Aggiungi una nuova colonna per il nome della categoria inglese alla tabella dei prodotti 
+--Add a new column for the English category name to the products table 
 ALTER  TABLE brazilian_marketplace.products 
 ADD  COLUMN product_category_name_eng STRING; 
 
 
---Aggiorna il nome della categoria inglese nella tabella dei prodotti utilizzando la tabella di traduzione 
+--Update the English category name in the products table using the translation table 
 UPDATE brazilian_marketplace.products AS pc 
 SET pc.product_category_name_eng = pct.product_category_name_english 
 FROM brazilian_marketplace.product_category_name_translation AS pct 
