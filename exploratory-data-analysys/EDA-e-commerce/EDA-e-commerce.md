@@ -1,5 +1,4 @@
-Exploratory Data Analysis for E-commerce
-===========================================
+# Exploratory Data Analysis for E-commerce
 
 Welcome to the vibrant world of Brazilian **e-commerce**, where Olist stands out as an innovative and dynamic entity.
 
@@ -20,6 +19,7 @@ The real data is anonymized and concerns orders made at the Olist Store. The dat
 
 ** Here I will address exploratory data analysis (EDA). **
 For the complete case study, including recommendations and proposed strategies, please see [Data Analysis and Strategies for E-commerce](https://github.com/JuniorJedi/data-analyst-portfolio/blob/d774c49c9797cd7d846ed56b3db8d936c30a42af/data%20analysis%20and%20strategies%20for%20e-commerce/README.md)
+
 
 ## Database Structure
 
@@ -242,9 +242,9 @@ By doing this, I obtain an **overview of the connections** between the various d
 
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://drive.google.com/file/d/175erkphnycP1Du3rkACNbSTE8j3WOtS-/view?usp=drive_link">
-  <source media="(prefers-color-scheme: light)" srcset="https://drive.google.com/file/d/175erkphnycP1Du3rkACNbSTE8j3WOtS-/view?usp=drive_link">
-  <img alt="Shows datasets from Olist" src="[https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png]([https://i.imgur.com/HRhd2Y0.png](https://drive.google.com/file/d/175erkphnycP1Du3rkACNbSTE8j3WOtS-/view?usp=drive_link))">
+  <source media="(prefers-color-scheme: dark)" srcset="https://esterpinna.it/wp-content/uploads/2024/02/F2_database-model.jpg">
+  <source media="(prefers-color-scheme: light)" srcset="https://esterpinna.it/wp-content/uploads/2024/02/F2_database-model.jpg">
+  <img alt="ER Schema" src="https://esterpinna.it/wp-content/uploads/2024/02/F2_database-model.jpg">
 </picture>
 
 Created with [QuickDBD](http://quickdbd/)
@@ -254,4 +254,158 @@ Our database also includes the “product\_category\_name\_translation” datase
 To make accessing this information more efficient and reduce database complexity, I have chosen to integrate the English translations directly into the “products” table.
 
 This step eliminates the need for a separate table for translations, thus reducing redundancy and simplifying future database queries.
+
+```SQL
+
+--Add a new column for English category name to the products table
+ALTER TABLE brazilian_marketplace.products
+ADD COLUMN product_category_name_eng STRING;
+
+
+--Update the English category name in products table using the translation table
+UPDATE brazilian_marketplace.products AS pc
+SET pc.product_category_name_eng = pct.product_category_name_english
+FROM brazilian_marketplace.product_category_name_translation AS pct
+WHERE pc.product_category_name = pct.product_category_name;
+
+```
+
+Now that we know what the tables in our database contain, we can get a clearer picture of the data by doing a preview of each table.
+
+```SQL
+
+--preview of the first 5 rows customer table
+SELECT *
+FROM `my-case-studies-270287.brazilian_marketplace.customers`
+LIMIT 5;
+
+```
+
+And so on for each table of the database.
+
+
+## Data Cleaning
+
+### Check for Missing Values
+** We look for null values: **
+
+```SQL
+
+--Check for Missing Values
+SELECT 'order_payments' AS order_payments, COUNT(*) AS null_rows
+FROM `my-case-studies-270287.brazilian_marketplace.order_payments`
+WHERE order_id IS NULL OR payment_sequential IS NULL OR payment_type IS NULL OR payment_installments IS NULL OR payment_value IS NULL;
+
+```
+
+And so on for each column of the table, for all tables.
+
+
+In the absence of further indications, most null values cannot be fixed.
+
+
+However, there are some missing translations (null values) for some product categories:
+For the category "portateis_cozinha_e_preparadores_de_alimentos," I assign the corresponding English category name "kitchen_and_food_preparation_portable_devices";
+For the category "pc_gamer," I assign the corresponding English category name "gaming_pc."
+
+
+
+
+The following queries are used to assign the English category name:
+
+```SQL
+
+--Display rows where the English category name is null but the original category name is not null
+SELECT product_category_name_eng, product_category_name
+FROM `my-case-studies-270287.brazilian_marketplace.products`
+WHERE product_category_name_eng IS NULL
+AND product_category_name IS NOT NULL;
+
+
+--Update the English category name where missing, based on specific Portuguese category names
+UPDATE `my-case-studies-270287.brazilian_marketplace.products`
+SET product_category_name_eng =
+  CASE
+    WHEN product_category_name = "portateis_cozinha_e_preparadores_de_alimentos"
+      THEN "kitchen_and_food_preparation_portable_devices"
+    WHEN product_category_name = "pc_gamer"
+      THEN "gaming_pc"
+    ELSE product_category_name_eng
+  END
+WHERE product_category_name_eng IS NULL;
+
+```
+
+Where the corresponding category is missing even in the original language, I replace the values with "N/A"
+
+```SQL
+
+--Setting the product_category_name_eng field to 'N/A' for all records where product_category_name_eng is NULL
+UPDATE `my-case-studies-270287.brazilian_marketplace.products`
+SET product_category_name_eng = 'N/A'
+WHERE product_category_name_eng IS NULL;
+
+```
+
+
+### Checking for Duplicate Data
+In each table of the database, it is essential to verify the presence of duplicate rows. However, in this specific case, such verification is superfluous because each table has a column containing unique data, ensuring the uniqueness of each row.
+
+| table          | column with unique data |
+|----------------|-------------------------|
+| customer       | customer_id             |
+| geolocation    | zip_code                |
+| order_items    | order_id                |
+| order_payments | order_id                |
+| order_reviews  | review_id               |
+| orders         | order_id                |
+| products       | product_id              |
+| sellers        | seller_id               |
+
+
+## Basic Statistical Analysis
+Now I’m going to perform a basic statistical analysis on some significant tables.
+
+To determine the time period under review, I proceed with the calculation of the date of the first and last purchase and then the time span under review, in terms of months.
+
+```SQL
+
+--Time Span in Months
+SELECT
+  MIN(order_purchase_timestamp) AS started_time,
+  MAX(order_purchase_timestamp) AS ended_time,
+  DATETIME_DIFF(DATETIME(MAX(order_purchase_timestamp)), DATETIME(MIN(order_purchase_timestamp)), MONTHS) AS difference
+FROM `my-case-studies-270287.brazilian_marketplace.orders`;
+
+```
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://esterpinna.it/wp-content/uploads/2024/02/F7_lasso-di-tempo_months.jpg">
+  <source media="(prefers-color-scheme: light)" srcset="https://esterpinna.it/wp-content/uploads/2024/02/F7_lasso-di-tempo_months.jpg">
+  <img alt="output time span" src="https://esterpinna.it/wp-content/uploads/2024/02/F7_lasso-di-tempo_months.jpg">
+</picture>
+
+** It's 25 months. **
+
+
+By calculating the average, minimum, and maximum payment values, we'll gain insights into the overall spending behavior of customers within the Olist marketplace.
+
+```SQL
+
+--calculating the average, minimum, and maximum payment values
+SELECT ROUND(AVG(payment_value),2) AS avg_order_value, MIN(payment_value) AS min_order_value, MAX(payment_value) AS max_order_value
+FROM `my-case-studies-270287.brazilian_marketplace.order_payments`;
+
+```
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://esterpinna.it/wp-content/uploads/2024/02/order-value.jpg">
+  <source media="(prefers-color-scheme: light)" srcset="https://esterpinna.it/wp-content/uploads/2024/02/order-value.jpg">
+  <img alt="output time span" src="https://esterpinna.it/wp-content/uploads/2024/02/order-value.jpg">
+</picture>
+
+This type of analysis can be replicated for other significant columns and tables within the database to gain a comprehensive understanding of data behavior in relation to orders, payments, and items sold on Olist.
+
+
+** For the complete case study, including recommendations and proposed strategies, please see [Data Analysis and Strategies for E-commerce](https://github.com/JuniorJedi/data-analyst-portfolio/blob/d774c49c9797cd7d846ed56b3db8d936c30a42af/data%20analysis%20and%20strategies%20for%20e-commerce/README.md) **
 
