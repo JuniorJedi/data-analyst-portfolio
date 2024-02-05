@@ -48,8 +48,9 @@ The **Olist database is composed of different datasets**:
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://i.imgur.com/HRhd2Y0.png">
   <source media="(prefers-color-scheme: light)" srcset="https://i.imgur.com/HRhd2Y0.png">
-  <img alt="Shows datasets from Olist" src="[https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png](https://i.imgur.com/HRhd2Y0.png)">
+  <img alt="Shows datasets from Olist" src="https://i.imgur.com/HRhd2Y0.png">
 </picture>
+
 
 Source: [Kaggle Olist Store](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
 
@@ -259,6 +260,12 @@ WHERE
 5\. Repeat Step 2 for the rest of your tables to be included.
 
 By doing this, I obtain an **overview of the connections** between the various datasets and their primary keys:
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://esterpinna.it/wp-content/uploads/2024/02/F2_database-model.jpg">
+  <source media="(prefers-color-scheme: light)" srcset="https://esterpinna.it/wp-content/uploads/2024/02/F2_database-model.jpg">
+  <img alt="ER schema" src="https://esterpinna.it/wp-content/uploads/2024/02/F2_database-model.jpg">
+</picture>
 
 Created with [QuickDBD](http://quickdbd/)
 
