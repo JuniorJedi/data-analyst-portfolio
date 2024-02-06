@@ -9,7 +9,8 @@ In my free time, my curiosity drives me to uncover the 'why' behind numbers, div
 
 I thrive in collaborative environments, valuing teamwork and the collective pursuit of new discoveries. I'm committed to continuous learning and tackling the challenges of solving complex problems, whether working in a team or independently.
 
-My personal interests align closely with my professional aspirations because I want to dedicate my time to what I'm passionate about. I'm fascinated by the stories data can tell about human behavior and am always seeking ways to translate these narratives into actionable strategies.
+My personal interests align closely with my professional aspirations because **I want to dedicate my time to what I'm passionate about**. I'm fascinated by the stories data can tell about human behavior and am always seeking ways to translate these narratives into actionable strategies.
 
+* My CV in [pdf](https://github.com/JuniorJedi/data-analyst-portfolio/blob/main/CV_Ester%20Pinna_2023_ENG.pdf)
 
 **This repository is designed to display my skills, share projects, and monitor my advancements in the field of Data Analytics.**
